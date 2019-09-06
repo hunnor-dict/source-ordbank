@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ordbank" default="hello">
+
+	<description>Download and extract files from Norsk ordbank</description>
+
+	<property name="data.dir" location="/data"/>
+	<property name="docs.dir" location="/docs"/>
+
+	<property name="pdf.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/norsk_ordbank.pdf"/>
+	<property name="tar.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/20190123_norsk_ordbank_nob_2005.tar.gz"/>
+	<property name="tar.file" value="20190123_norsk_ordbank_nob_2005"/>
+	<property name="tar.dir" value="20190123_Norsk_ordbank_nob_2005"/>
+
+	<property name="source.encoding" value="ISO-8859-1"/>
+	<property name="target.encoding" value="UTF-8"/>
+
+	<target name="hello">
+		<echo message="Hello Ant!"/>
+	</target>
+
+	<target name="download.pdf">
+		<get src="${pdf.url}" dest="${docs.dir}" skipexisting="true"/>
+	</target>
+
+	<target name="download.tar">
+		<get src="${tar.url}" dest="${data.dir}/${tar.file}.tar.gz" skipexisting="true"/>
+	</target>
+
+	<target name="extract" depends="download.tar">
+		<untar src="${data.dir}/${tar.file}.tar.gz" dest="${data.dir}" compression="gzip" overwrite="false"/>
+	</target>
+
+	<target name="sort" depends="extract">
+		<move file="${data.dir}/${tar.dir}/norsk_ordbank_argstr.txt" todir="${docs.dir}"/>
+	</target>
+
+	<target name="recode" depends="sort">
+		<copy encoding="${source.encoding}" outputencoding="${target.encoding}" todir="${data.dir}">
+			<fileset dir="${data.dir}/${tar.dir}" includes="*.txt"/>
+		</copy>
+	</target>
+
+	<target name="cleanup" depends="recode">
+		<delete file="${data.dir}/${tar.file}.tar.gz"/>
+		<delete dir="${data.dir}/${tar.dir}"/>
+	</target>
+
+	<target name="ordbank" depends="cleanup,download.pdf">
+	</target>
+
+</project>

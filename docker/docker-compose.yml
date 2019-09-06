@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  ant:
+    build: ./ant
+    command: ["ordbank"]
+    volumes:
+      - ./ant:/ant
+      - ../data:/data
+      - ../docs:/docs
+  mysql:
+    build: ./mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../data:/data

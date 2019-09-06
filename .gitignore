@@ -1,0 +1,5 @@
+data/*.tar.gz
+data/**/*.txt
+
+docs/*.pdf
+docs/*.txt
