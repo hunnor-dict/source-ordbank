@@ -2,11 +2,13 @@
 
 This is the first article in a series about Norsk ordbank.
 
-Norsk ordbank is a lexical database for Norwegian (bokmål and nynorsk), and reflects the current, official standard orthography. This article shows how to set up a local copy of the database.
+Norsk ordbank is a lexical database for Norwegian (bokmål and nynorsk), and reflects the current, official standard orthography. The database is available for download from [Språkbanken](https://www.nb.no/sprakbanken/show?serial=oai%3Anb.no%3Asbr-5&lang=nb).
 
-Norsk ordbank is available for download from [Språkbanken](https://www.nb.no/sprakbanken/show?serial=oai%3Anb.no%3Asbr-5&lang=nb).
+In simple terms, Norsk ordbank contains Norwegian words, along with information about their inflection and composition. It can be a useful tool in many scenarios, including authoring and publishing language related works, such as dictionaries or encyclopedias, or natural language processing applications.
 
-To run the commands in the article, you will need a PC or Mac with Docker installed, and a copy of the repository at `https://github.com/adamzkover/ordbank.git`.
+This article shows how to set up a local copy of the database.
+
+> To run the commands in the article, you will need a PC or Mac with Docker installed, and a copy of the repository at `https://github.com/adamzkover/ordbank.git`. Some knowledge of Ant and Docker is useful, but not required.
 
 # TL;DR
 
@@ -81,7 +83,7 @@ The steps above can also be run with a single command, using the `ordbank` targe
 
 `docker run --rm --volume $(pwd):/ant --volume $(pwd)/../../data:/data --volume $(pwd)/../../docs:/docs docker_ant ordbank`
 
-# 1.3 Create the database
+## 1.3 Create the database
 
 The `docker/mysql` directory contains the Dockerfile and configuration files for the MySQL server. The configuration files make it possible to load data from text files using the command line.
 
@@ -100,16 +102,22 @@ Adding data to the database is split to 3 steps. Execute the following commands 
 
 1. Create the tables:
 
-`docker exec ordbank-mysql sh -c 'mysql ordbank < /sql/create.sql'`
+  `docker exec ordbank-mysql sh -c 'mysql ordbank < /sql/create.sql'`
 
 2. Import data:
 
-`docker exec ordbank-mysql sh -c 'mysql -v -v -v --local-infile ordbank < /sql/import.sql'`
+  `docker exec ordbank-mysql sh -c 'mysql -v -v -v --local-infile ordbank < /sql/import.sql'`
 
 3. Apply constraints:
 
-`docker exec ordbank-mysql sh -c 'mysql ordbank < /sql/constraints.sql'`
+  `docker exec ordbank-mysql sh -c 'mysql ordbank < /sql/constraints.sql'`
 
 In case you want to start again, you can use `drop.sql` to drop all tables :
 
 `docker exec ordbank-mysql sh -c 'mysql ordbank < /sql/drop.sql'`
+
+# Conclusion
+
+By running the commands in this article, you can quickly have a local copy of Norsk ordbank up and running.
+
+The next article is going to explore the contents of the database, look at what the data is and give some use case examples.
