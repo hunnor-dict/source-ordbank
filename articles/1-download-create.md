@@ -30,13 +30,13 @@ docker exec docker_mysql_1 sh -c 'mysql ordbank < /sql/constraints.sql'
 
 Connect to the datanase container with any MySQL client, with username `ordbank` and password `ordbank` and you should see the tables of Norsk ordbank.
 
-# 1 How to build the database
+# How to build the database
 
 Norsk ordbank is stored in a relational database, and is available for download as exports of the database tables. The database structure is documented in a separate PDF file.
 
 We will have to download two files, and at least extract the archive. We will use Apache Ant to automate this process.
 
-## 1.1 Prepare the tools
+## 1 Prepare the tools
 
 Running any of the commands should not require installation of additional tools. This means that Ant will have to be run with Docker. First, we create and test a docker image with Ant installed.
 
@@ -57,7 +57,7 @@ To test the image, start a container with the current directory mounted to `/ant
 
 The container should print the "Hello Ant!" message and exit.
 
-## 1.2 Download the data
+## 2 Download the data
 
 The same Ant build file contains targets for downloading the archive that contains the database export to the `data` directory, and the documentation to the `docs` directory. Run the following commands to download both files:
 
@@ -83,7 +83,7 @@ The steps above can also be run with a single command, using the `ordbank` targe
 
 `docker run --rm --volume $(pwd):/ant --volume $(pwd)/../../data:/data --volume $(pwd)/../../docs:/docs docker_ant ordbank`
 
-## 1.3 Create the database
+## 3 Create the database
 
 The `docker/mysql` directory contains the Dockerfile and configuration files for the MySQL server. The configuration files make it possible to load data from text files using the command line.
 
