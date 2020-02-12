@@ -1,11 +1,11 @@
-FROM openjdk:11-jdk
+FROM openjdk:13-jdk
 
 RUN cd /opt && \
-    wget -q http://apache.uib.no/ant/binaries/apache-ant-1.10.6-bin.tar.gz && \
-    tar -xzf apache-ant-1.10.6-bin.tar.gz && \
-    rm apache-ant-1.10.6-bin.tar.gz
+    curl -s -S -o apache-ant-1.10.7-bin.tar.gz http://apache.uib.no/ant/binaries/apache-ant-1.10.7-bin.tar.gz && \
+    tar -xzf apache-ant-1.10.7-bin.tar.gz && \
+    rm apache-ant-1.10.7-bin.tar.gz
 
-ENV PATH /opt/apache-ant-1.10.6/bin:${PATH}
+ENV PATH /opt/apache-ant-1.10.7/bin:${PATH}
 
 WORKDIR /ant
 

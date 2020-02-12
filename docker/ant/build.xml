@@ -7,9 +7,12 @@
 	<property name="docs.dir" location="/docs"/>
 
 	<property name="pdf.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/norsk_ordbank.pdf"/>
-	<property name="tar.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/20190123_norsk_ordbank_nob_2005.tar.gz"/>
-	<property name="tar.file" value="20190123_norsk_ordbank_nob_2005"/>
-	<property name="tar.dir" value="20190123_Norsk_ordbank_nob_2005"/>
+	<property name="bm.tar.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/20190123_norsk_ordbank_nob_2005.tar.gz"/>
+	<property name="bm.tar.file" value="20190123_norsk_ordbank_nob_2005"/>
+	<property name="bm.tar.dir" value="20190123_Norsk_ordbank_nob_2005"/>
+	<property name="nn.tar.url" value="https://www.nb.no/sbfil/leksikalske_databaser/ordbank/20190123_norsk_ordbank_nno_2012.tar.gz"/>
+	<property name="nn.tar.file" value="20190123_norsk_ordbank_nno_2012"/>
+	<property name="nn.tar.dir" value="20190123_norsk_ordbank_nno_2012"/>
 
 	<property name="source.encoding" value="ISO-8859-1"/>
 	<property name="target.encoding" value="UTF-8"/>
@@ -22,30 +25,53 @@
 		<get src="${pdf.url}" dest="${docs.dir}" skipexisting="true"/>
 	</target>
 
-	<target name="download.tar">
-		<get src="${tar.url}" dest="${data.dir}/${tar.file}.tar.gz" skipexisting="true"/>
+	<target name="download.bm.tar">
+		<get src="${bm.tar.url}" dest="${data.dir}/${bm.tar.file}.tar.gz" skipexisting="true"/>
 	</target>
 
-	<target name="extract" depends="download.tar">
-		<untar src="${data.dir}/${tar.file}.tar.gz" dest="${data.dir}" compression="gzip" overwrite="false"/>
+	<target name="download.nn.tar">
+		<get src="${nn.tar.url}" dest="${data.dir}/${nn.tar.file}.tar.gz" skipexisting="true"/>
 	</target>
 
-	<target name="sort" depends="extract">
-		<move file="${data.dir}/${tar.dir}/norsk_ordbank_argstr.txt" todir="${docs.dir}"/>
+	<target name="bm.extract" depends="download.bm.tar">
+		<untar src="${data.dir}/${bm.tar.file}.tar.gz" dest="${data.dir}" compression="gzip" overwrite="false"/>
 	</target>
 
-	<target name="recode" depends="sort">
+	<target name="nn.extract" depends="download.nn.tar">
+		<untar src="${data.dir}/${nn.tar.file}.tar.gz" dest="${data.dir}" compression="gzip" overwrite="false"/>
+	</target>
+
+	<target name="bm.sort" depends="bm.extract">
+		<move file="${data.dir}/${bm.tar.dir}/norsk_ordbank_argstr.txt" todir="${docs.dir}"/>
+	</target>
+
+	<target name="nn.sort" depends="nn.extract">
+		<move file="${data.dir}/${nn.tar.dir}/norsk_ordbank_argstr.txt" todir="${docs.dir}"/>
+	</target>
+
+	<target name="bm.recode" depends="bm.sort">
 		<copy encoding="${source.encoding}" outputencoding="${target.encoding}" todir="${data.dir}">
-			<fileset dir="${data.dir}/${tar.dir}" includes="*.txt"/>
+			<fileset dir="${data.dir}/${bm.tar.dir}" includes="*.txt"/>
 		</copy>
 	</target>
 
-	<target name="cleanup" depends="recode">
-		<delete file="${data.dir}/${tar.file}.tar.gz"/>
-		<delete dir="${data.dir}/${tar.dir}"/>
+	<target name="nn.recode" depends="nn.sort">
+		<copy encoding="${source.encoding}" outputencoding="${target.encoding}" todir="${data.dir}">
+			<fileset dir="${data.dir}/${nn.tar.dir}" includes="*.txt"/>
+		</copy>
 	</target>
 
-	<target name="ordbank" depends="cleanup,download.pdf">
+	<target name="clean">
+		<delete file="${data.dir}/${bm.tar.file}.tar.gz"/>
+		<delete dir="${data.dir}/${bm.tar.dir}"/>
+		<delete file="${data.dir}/${nn.tar.file}.tar.gz"/>
+		<delete dir="${data.dir}/${nn.tar.dir}"/>
+	</target>
+
+	<target name="bm" depends="bm.recode,download.pdf">
+	</target>
+
+	<target name="nn" depends="nn.recode,download.pdf">
 	</target>
 
 </project>
