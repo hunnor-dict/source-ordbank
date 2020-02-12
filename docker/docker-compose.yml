@@ -3,7 +3,7 @@ version: "3.7"
 services:
   ant:
     build: ./ant
-    command: ["ordbank"]
+    command: ["bm", "nn"]
     volumes:
       - ./ant:/ant
       - ../data:/data
@@ -14,3 +14,7 @@ services:
       - "3306:3306"
     volumes:
       - ../data:/data
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
