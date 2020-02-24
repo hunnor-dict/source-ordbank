@@ -3,3 +3,5 @@ data/**/*.txt
 
 docs/*.pdf
 docs/*.txt
+
+hunspell/target

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset comparisonMethod="maven">
+	<ignoreVersions>
+		<ignoreVersion type="regex">.*-alpha[\d]+</ignoreVersion>
+		<ignoreVersion type="regex">.*-beta[\d]+</ignoreVersion>
+	</ignoreVersions>
+</ruleset>
