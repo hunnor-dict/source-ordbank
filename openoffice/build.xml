@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="openoffice" default="openoffice">
+
+	<property name="build.dir" location="build"/>
+
+	<property name="aff" location="nn_NO.aff"/>
+	<property name="dic" location="nn_NO.dic"/>
+
+	<target name="openoffice">
+		
+		<mkdir dir="${build.dir}"/>
+
+		<copy todir="${build.dir}">
+			<fileset dir="package"/>
+		</copy>
+
+		<mkdir dir="${build.dir}/nn_NO/DICT"/>
+
+		<copy file="${aff}" todir="${build.dir}/nn_NO/DICT"/>
+		<copy file="${dic}" todir="${build.dir}/nn_NO/DICT"/>
+
+		<zip basedir="${build.dir}/nn_NO" destfile="${build.dir}/nn_NO.zip" level="9" filesonly="yes"/>
+		<move file="${build.dir}/nn_NO.zip" tofile="${build.dir}/nn_NO.oxt"/>
+
+		<delete dir="${build.dir}/nn_NO"/>
+
+	</target>
+
+</project>
